@@ -1,0 +1,21 @@
+        //-----------------------------insert IMAGE into pictureBox---------------------------------------
+        private void button_browse_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog opf = new OpenFileDialog();
+            opf.Filter = "Select Image(*.jpg;*.png;*.git)|*.jpg;*.png;*.git";
+
+            if (opf.ShowDialog() == DialogResult.OK)
+            {
+                this.pictureBox_profile_img.Image = Image.FromFile(opf.FileName);
+            }
+        }
+        //------------------------------save IMAGE into MemoryStream--------------------------------------
+        MemoryStream pic = new MemoryStream();
+        this.pictureBox_profile_img.Image.Save(pic, this.pictureBox_profile_img.Image.RawFormat);
+        //-------------------------------insert IMAGE into DB---------------------------------------------
+        command.Parameters.Add("pic", SqlDbType.Image).Value = pic.ToArray();
+        //-------------------------------get IMAGE--------------------------------------------------------
+        byte[] pic = (byte[])table.Rows[0]["Picture"];
+        MemoryStream stream = new MemoryStream(pic);
+        this.pictureBox1.Image = Image.FromStream(stream);
+
